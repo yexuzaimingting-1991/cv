@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>马挚 Ma Zhi · AI 创意技术专家 / Creative Technologist</title>
+<meta name="description" content="马挚 · AI 创意技术专家 · 多模态工作流架构 / Ma Zhi · Creative Technologist · Multimodal Workflow Architect">
+<style>
+  :root{
+    --ink:#1b2430; --sub:#4a5565; --mute:#8892a0; --line:#dfe4ea;
+    --accent:#1f4fd8; --soft:#eef2fd; --bg:#f5f7fa;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    overflow-x:hidden;background:var(--bg); color:var(--ink);
+    font:15px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* 双语切换:只显示当前语言 */
+  body.lang-zh .en{display:none !important}
+  body.lang-en .zh{display:none !important}
+
+  /* 顶栏 */
+  .bar{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .bar-in{max-width:920px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .bar b{font-size:15px;letter-spacing:.06em}
+  .bar nav{display:flex;gap:18px;font-size:13.5px}
+  .bar nav a{color:var(--sub);text-decoration:none}
+  .bar nav a:hover{color:var(--accent)}
+  .sw{display:flex;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .sw button{font:inherit;font-size:12.5px;padding:4px 12px;border:0;background:#fff;color:var(--sub);cursor:pointer}
+  .sw button.on{background:var(--ink);color:#fff}
+  .sw button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+  main{max-width:920px;margin:0 auto;padding:0 24px 64px;overflow-wrap:anywhere}
+
+  /* 首屏 */
+  .hero{background:#fff;margin:28px 0 0;padding:44px 44px 36px;border:1px solid var(--line);border-top:3px solid var(--accent)}
+  .hero h1{font-size:40px;line-height:1.1;letter-spacing:.06em;font-weight:700}
+  body.lang-en .hero h1{letter-spacing:.01em}
+  .role{margin-top:10px;font-size:19px;font-weight:600;color:var(--accent)}
+  .intent{margin-top:4px;color:var(--sub);font-size:14.5px}
+  .contact{margin-top:20px;display:flex;flex-wrap:wrap;gap:6px 28px;font-size:14px;color:var(--sub);padding-top:16px;border-top:1px solid var(--line)}
+  .contact a{color:inherit;text-decoration:none}
+  .contact a:hover{color:var(--accent)}
+  .contact b{font-weight:500;color:var(--mute);margin-right:6px;font-size:12.5px}
+
+  section{margin-top:44px;scroll-margin-top:64px}
+  h2{font-size:13px;letter-spacing:.18em;font-weight:700;padding-left:10px;border-left:3px solid var(--accent);line-height:1.2;margin-bottom:16px;text-transform:uppercase}
+  body.lang-zh h2{letter-spacing:.2em}
+
+  .summary{font-size:16.5px;line-height:1.85;color:var(--sub);max-width:780px}
+  .summary b{color:var(--ink);font-weight:600}
+
+  /* 能力 */
+  .matrix{background:#fff;border:1px solid var(--line)}
+  .row{display:grid;grid-template-columns:150px minmax(0,1fr);border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:0}
+  .row .k{padding:12px 16px;font-weight:700;font-size:14px;background:#fafbfc;border-right:1px solid var(--line)}
+  .row .v{padding:12px 16px;display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-size:13px;line-height:1.4;padding:3px 9px;border:1px solid var(--line);border-radius:2px;background:#fff;color:#2b3442}
+  .chip.hl{background:var(--soft);border-color:#cfdafb;color:#173b9e}
+
+  /* 项目 */
+  .proj{background:#fff;border:1px solid var(--line);padding:24px 28px;margin-bottom:16px}
+  .proj-h{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:4px 16px}
+  .proj-h h3{font-size:18px}
+  .proj-h > span{font-size:13px;color:var(--mute)}
+  .lead{color:var(--sub);margin:4px 0 10px}
+  .pts{list-style:none}
+  .pts li{position:relative;padding-left:16px;margin-bottom:6px;color:#2b3442}
+  .pts li::before{content:"";position:absolute;left:0;top:.75em;width:5px;height:5px;background:var(--accent)}
+  .pts li b{font-weight:600;color:var(--ink)}
+
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .card{background:#fff;border:1px solid var(--line);border-top:2px solid var(--accent);padding:16px 20px 18px}
+  .card h4{font-size:15.5px;margin-bottom:4px}
+  .card h4 i{font-style:normal;font-weight:400;font-size:12px;color:var(--mute);margin-left:8px}
+  .card p{font-size:14px;color:var(--sub);line-height:1.7}
+
+  /* 经历 */
+  .tl{background:#fff;border:1px solid var(--line);padding:8px 28px}
+  .job{padding:16px 0;border-bottom:1px solid var(--line)}
+  .job:last-child{border-bottom:0}
+  .job-h{display:flex;justify-content:space-between;flex-wrap:wrap;gap:2px 16px;align-items:baseline}
+  .job-h b{font-size:16px}
+  .job-h > span{font-size:13px;color:var(--mute)}
+  .job .t{color:var(--accent);font-weight:600;font-size:14px}
+  .job p{margin-top:4px;color:var(--sub);font-size:14.5px}
+
+  .two{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+  .box{background:#fff;border:1px solid var(--line);padding:18px 24px}
+  .box li{list-style:none;color:var(--sub);font-size:14.5px;margin-bottom:6px}
+  .box li b{color:var(--ink);font-weight:600}
+  .box .edu-n{font-size:16px;font-weight:600;display:block}
+  .box p{color:var(--sub);font-size:14.5px}
+
+  footer{margin-top:48px;text-align:center;font-size:12.5px;color:var(--mute)}
+
+  @media (max-width:720px){
+    .bar nav{display:none}
+    .hero{padding:28px 22px}
+    .hero h1{font-size:32px}
+    .row{grid-template-columns:minmax(0,1fr)}
+    .row .k{border-right:0;border-bottom:1px solid var(--line)}
+    .cards,.two{grid-template-columns:minmax(0,1fr)}
+    .proj{padding:20px}
+    .tl{padding:4px 20px}
+  }
+  @media print{
+    body{background:#fff}
+    .bar{position:static;border:0}
+    .bar nav,.sw{display:none}
+    .hero,.proj,.card,.matrix,.tl,.box{break-inside:avoid}
+    @page{size:A4;margin:12mm}
+  }
+</style>
+</head>
+<body class="lang-zh">
+
+<div class="bar"><div class="bar-in">
+  <b><span class="zh">马挚</span><span class="en">Ma Zhi</span></b>
+  <nav>
+    <a href="#about"><span class="zh">概述</span><span class="en">About</span></a>
+    <a href="#skills"><span class="zh">能力</span><span class="en">Skills</span></a>
+    <a href="#projects"><span class="zh">项目</span><span class="en">Projects</span></a>
+    <a href="#more"><span class="zh">实践</span><span class="en">Practice</span></a>
+    <a href="#exp"><span class="zh">经历</span><span class="en">Experience</span></a>
+    <a href="#film"><span class="zh">作品</span><span class="en">Film</span></a>
+  </nav>
+  <div class="sw" role="group" aria-label="Language">
+    <button type="button" data-l="zh" class="on">中文</button>
+    <button type="button" data-l="en">EN</button>
+  </div>
+</div></div>
+
+<main>
+
+<div class="hero">
+  <h1><span class="zh">马挚</span><span class="en">Ma Zhi</span></h1>
+  <div class="role">
+    <span class="zh">AI 创意技术专家 · 多模态工作流架构</span>
+    <span class="en">Creative Technologist · Multimodal Workflow Architect</span>
+  </div>
+  <div class="intent">
+    <span class="zh">求职意向:AI 内容生产负责人 · AI 视频制作 · 创意技术 ｜ 期望城市:上海</span>
+    <span class="en">Seeking: AI Content Production Lead · AI Video Production · Creative Technology | Location: Shanghai</span>
+  </div>
+  <div class="contact">
+    <span><b class="zh">邮箱</b><b class="en">Email</b><a class="em" href="#" data-u="j912835225" data-d="gmail.com">…</a></span>
+    <span><b class="zh">城市</b><b class="en">City</b><span class="zh">上海</span><span class="en">Shanghai</span></span>
+  </div>
+</div>
+
+<section id="about">
+  <h2><span class="zh">个人概述</span><span class="en">Profile</span></h2>
+  <p class="summary zh"><b>把创意判断与工程实现合在一起,面向业务落地 AI 内容生产与 Agent 系统。</b>独立设计并长期运行多智能体协作体系,以及覆盖图像、视频、语音、文本的私有化 AI 内容生产平台,具备从需求拆解、系统架构、权限与审计机制,到工具接入、前端实现和上线交付的完整闭环能力。11 年影像行业背景,对生成结果的<b>质量判定与验收标准</b>有成熟判断,能把“好不好”转成可执行的评估规则,并交给 Agent 去跑。</p>
+  <p class="summary en"><b>I combine creative judgment with engineering to put AI content production and agent systems into real business use.</b> I independently designed and have long operated a multi-agent collaboration system and a private AI content platform spanning image, video, speech and text, covering the full loop from requirements and architecture to permissions, auditing, tool integration, front-end build and release. With 11 years in the image industry, I bring mature judgment on <b>quality criteria and acceptance standards</b> for generated output, and can turn “is it good?” into executable evaluation rules that agents run.</p>
+</section>
+
+<section id="skills">
+  <h2><span class="zh">核心能力</span><span class="en">Core Skills</span></h2>
+  <div class="matrix">
+    <div class="row"><div class="k"><span class="zh">Agent 工程</span><span class="en">Agent Engineering</span></div>
+      <div class="v">
+        <span class="chip hl"><span class="zh">多智能体编排</span><span class="en">Multi-agent orchestration</span></span>
+        <span class="chip hl"><span class="zh">权限边界与 Guardrails</span><span class="en">Permission boundaries &amp; guardrails</span></span>
+        <span class="chip"><span class="zh">任务派发与角色分工</span><span class="en">Task dispatch &amp; role design</span></span>
+        <span class="chip"><span class="zh">Hook 机制与事前拦截</span><span class="en">Hooks &amp; pre-execution interception</span></span>
+        <span class="chip"><span class="zh">红蓝验闸与事后审计</span><span class="en">Red/blue testing &amp; post-hoc audit</span></span>
+        <span class="chip"><span class="zh">Skill 体系设计</span><span class="en">Skill system design</span></span>
+        <span class="chip"><span class="zh">MCP 工具接入</span><span class="en">MCP tool integration</span></span>
+        <span class="chip">Claude Code · Kiro · Gemini CLI · Codex</span>
+      </div></div>
+    <div class="row"><div class="k"><span class="zh">模型与推理</span><span class="en">Models &amp; Inference</span></div>
+      <div class="v">
+        <span class="chip hl"><span class="zh">私有化部署</span><span class="en">Private deployment</span></span>
+        <span class="chip hl"><span class="zh">ComfyUI 多实例调度与显存互让</span><span class="en">Multi-instance ComfyUI &amp; VRAM sharing</span></span>
+        <span class="chip"><span class="zh">本地 LLM(llama.cpp,OpenAI 协议)</span><span class="en">Local LLM (llama.cpp, OpenAI API)</span></span>
+        <span class="chip">Stable Diffusion · Flux · Qwen-Image · Z-Image</span>
+        <span class="chip">MiniMax H3</span>
+        <span class="chip"><span class="zh">LoRA 训练与应用</span><span class="en">LoRA training &amp; use</span></span>
+        <span class="chip"><span class="zh">Hugging Face 选型</span><span class="en">Hugging Face model selection</span></span>
+      </div></div>
+    <div class="row"><div class="k"><span class="zh">多模态生产</span><span class="en">Multimodal Production</span></div>
+      <div class="v">
+        <span class="chip"><span class="zh">文生图 / 图生图 / 局部重绘</span><span class="en">Text/image-to-image, inpainting</span></span>
+        <span class="chip"><span class="zh">抠像 / 超分</span><span class="en">Matting / upscaling</span></span>
+        <span class="chip"><span class="zh">视频生成与对话戏分段拼接</span><span class="en">Video generation &amp; segmented dialogue scenes</span></span>
+        <span class="chip"><span class="zh">语音合成与转写</span><span class="en">TTS &amp; transcription</span></span>
+        <span class="chip"><span class="zh">人声分离与对白修复</span><span class="en">Vocal separation &amp; dialogue repair</span></span>
+        <span class="chip"><span class="zh">图生 3D</span><span class="en">Image-to-3D</span></span>
+        <span class="chip"><span class="zh">批量读图与文本处理</span><span class="en">Batch vision &amp; text processing</span></span>
+      </div></div>
+    <div class="row"><div class="k"><span class="zh">提示词工程</span><span class="en">Prompt Engineering</span></div>
+      <div class="v">
+        <span class="chip"><span class="zh">结构化 Prompt 体系</span><span class="en">Structured prompt systems</span></span>
+        <span class="chip"><span class="zh">长文本与多镜头一致性</span><span class="en">Long-form &amp; multi-shot consistency</span></span>
+        <span class="chip"><span class="zh">风格迁移与作者性还原</span><span class="en">Style transfer &amp; authorial voice</span></span>
+        <span class="chip"><span class="zh">参考图 / 首尾帧 / 尾帧续接</span><span class="en">Reference, first/last-frame &amp; frame chaining</span></span>
+      </div></div>
+    <div class="row"><div class="k"><span class="zh">开发与交付</span><span class="en">Dev &amp; Delivery</span></div>
+      <div class="v">
+        <span class="chip">Python</span><span class="chip">JavaScript / HTML / CSS / Canvas</span>
+        <span class="chip"><span class="zh">Three.js / D3 / GSAP</span><span class="en">Three.js / D3 / GSAP</span></span>
+        <span class="chip">Git / GitHub</span><span class="chip">Cloudflare Pages / Workers / R2</span>
+        <span class="chip"><span class="zh">Linux VPS 运维</span><span class="en">Linux VPS ops</span></span>
+        <span class="chip"><span class="zh">Playwright 本地 QA</span><span class="en">Playwright QA</span></span>
+      </div></div>
+    <div class="row"><div class="k"><span class="zh">影像与后期</span><span class="en">Image &amp; Post</span></div>
+      <div class="v">
+        <span class="chip"><span class="zh">ffmpeg 自动化</span><span class="en">ffmpeg automation</span></span>
+        <span class="chip"><span class="zh">DaVinci Resolve(脚本与 OTIO / XML 时间线)</span><span class="en">DaVinci Resolve (scripting, OTIO/XML timelines)</span></span>
+        <span class="chip"><span class="zh">HyperFrames(HTML 渲染视频)</span><span class="en">HyperFrames (HTML-rendered video)</span></span>
+        <span class="chip">Pro Tools</span><span class="chip">Blender · Godot</span>
+        <span class="chip"><span class="zh">商业摄影与调色</span><span class="en">Commercial photography &amp; grading</span></span>
+      </div></div>
+  </div>
+</section>
+
+<section id="projects">
+  <h2><span class="zh">核心项目</span><span class="en">Selected Projects</span></h2>
+
+  <div class="proj">
+    <div class="proj-h"><h3><span class="zh">多智能体协作与治理体系</span><span class="en">Multi-Agent Collaboration &amp; Governance System</span></h3>
+      <span class="zh">架构设计 · 独立运行</span><span class="en">Architecture · Solo operation</span></div>
+    <p class="lead zh">让 AI 承担执行层,人只做判定与验收。</p>
+    <p class="lead en">AI handles execution; humans only judge and accept.</p>
+    <ul class="pts zh">
+      <li>设计多 Agent 的<b>角色分工、任务分级与派发规范</b>:分析、计划、执行、验收、收束各有边界,复杂任务先出方案再动手。</li>
+      <li>建立<b>权限隔离与 Guardrails</b>:按目录、操作类型、网络与凭证分级设闸,高风险动作必须人工授权后放行。</li>
+      <li>用 <b>Hook 在工具调用前后拦截与记账</b>,并以红蓝对抗方式主动打靶验闸,以独立账本对照 Agent 自述,避免“自报自验”。</li>
+      <li>建立<b>事后审计与验证流程</b>:交付件逐条对触点核验,未验证项显式标注;沉淀 70 余个 Skill 与判例库,使跨 Agent 口径一致、可追溯。</li>
+    </ul>
+    <ul class="pts en">
+      <li>Designed <b>role split, task tiering and dispatch rules</b> across agents: analysis, planning, execution, acceptance and wrap-up each have clear boundaries, and complex work starts with a plan.</li>
+      <li>Built <b>permission isolation and guardrails</b> tiered by directory, action type, network and credentials; high-risk actions require human approval.</li>
+      <li>Used <b>hooks to intercept and log around tool calls</b>, red-teamed the guardrails, and cross-checked agent self-reports against an independent ledger to prevent self-certification.</li>
+      <li>Set up a <b>post-hoc audit and verification process</b>: deliverables are checked item by item against evidence and unverified items are flagged; 70+ skills and a precedent library keep behavior consistent and traceable across agents.</li>
+    </ul>
+  </div>
+
+  <div class="proj">
+    <div class="proj-h"><h3><span class="zh">私有化 AI 内容生产平台</span><span class="en">Private AI Content Production Platform</span></h3>
+      <span class="zh">独立设计与实现</span><span class="en">Solo design &amp; build</span></div>
+    <p class="lead zh">Mac 调度、GPU 工作站生产的双机全链路,任务投出即自动执行并回收。</p>
+    <p class="lead en">A two-machine pipeline: a Mac dispatches, a GPU workstation produces; jobs run and return automatically.</p>
+    <ul class="pts zh">
+      <li>整合<b>生图、改图、抠像、放大、视频生成、文本、读图</b>七类任务,统一为 JSON 任务协议 + 文件队列,多 Agent 与人工均可投单。</li>
+      <li>部署 <b>4 路 ComfyUI 专用实例 + 本地 LLM 服务</b>,按任务类型自动点火,并实现实例之间的<b>显存互让与互斥</b>;投单前先探测显存,忙则不派。</li>
+      <li>管理 <b>30 余个 LoRA</b> 与多条风格线;为批量机械活(打标、分类、读图抄字、初译)选用本地模型,把云端额度留给判断类任务。</li>
+      <li>明确治理线:本地模型只当“手”不当“脑”,不开放自主执行与写权限,“自主决定”与“能动手”不在同一处出现。</li>
+    </ul>
+    <ul class="pts en">
+      <li>Unified <b>image generation, editing, matting, upscaling, video generation, text and vision</b> jobs behind one JSON job protocol and file queue, open to agents and humans alike.</li>
+      <li>Deployed <b>four dedicated ComfyUI instances plus a local LLM service</b> that start on demand by job type, with <b>VRAM yielding and mutual exclusion</b>; VRAM is probed before dispatch and jobs hold when the GPU is busy.</li>
+      <li>Managed <b>30+ LoRAs</b> and several style lines; routed bulk mechanical work (tagging, classification, OCR-style reading, first-pass translation) to local models, saving cloud quota for judgment tasks.</li>
+      <li>Set a clear governance line: local models act as hands, not brains, with no autonomous execution or write access, so “deciding” and “acting” never sit in the same place.</li>
+    </ul>
+  </div>
+
+  <div class="proj">
+    <div class="proj-h"><h3><span class="zh">对话戏视频自动化生产线</span><span class="en">Automated Dialogue-Scene Video Pipeline</span></h3>
+      <span class="zh">工序设计 · 脚本实现</span><span class="en">Process design · Scripting</span></div>
+    <p class="lead zh">剧本对话戏 → 分镜切段 → 本地视频模型生成 → 拼接成片,台词逐字对齐。</p>
+    <p class="lead en">Script → shot segmentation → local video model → assembled cut, with dialogue matched word for word.</p>
+    <ul class="pts zh">
+      <li>基于 MiniMax H3 设计<b>分段生成、尾帧续接、声纹描述符锁定人物声音</b>的工序,用后台驱动脚本批量投单。</li>
+      <li>以转写文本核对台词、以机器指标验收成片,减少靠人眼逐条检查。</li>
+    </ul>
+    <ul class="pts en">
+      <li>Built on MiniMax H3: <b>segmented generation, last-frame chaining and voice descriptors to lock each character’s voice</b>, with background driver scripts submitting jobs in batch.</li>
+      <li>Verified dialogue against transcripts and accepted cuts on machine metrics, reducing line-by-line manual review.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="more">
+  <h2><span class="zh">更多实践</span><span class="en">More Practice</span></h2>
+  <div class="cards">
+    <div class="card"><h4><span class="zh">MCP 与桌面软件接入</span><span class="en">MCP &amp; Desktop Tool Integration</span><i class="zh">工具层</i><i class="en">Tooling</i></h4>
+      <p class="zh">将 Blender、Godot、Photoshop、Pixelorama、DaVinci Resolve、浏览器自动化接入 Agent,实现建场景、改图、出时间线的脚本化;验证以真实产物为准,不以“连接成功”为准。</p>
+      <p class="en">Connected Blender, Godot, Photoshop, Pixelorama, DaVinci Resolve and browser automation to agents to script scene building, image edits and timelines. Verification rests on real output, not on “connected”.</p></div>
+    <div class="card"><h4><span class="zh">视频与音频自动化</span><span class="en">Video &amp; Audio Automation</span><i class="zh">后期层</i><i class="en">Post</i></h4>
+      <p class="zh">ffmpeg 剪切拼接压制;镜头切点检测、词级转写驱动的无台本剪辑;代码生成可导入达芬奇的时间线;HyperFrames 用 HTML 渲染字幕与动态图形;Pro Tools 对白修复与响度交付。</p>
+      <p class="en">ffmpeg cutting, joining and encoding; shot detection and transcript-driven script-free editing; code-generated timelines for DaVinci Resolve; HyperFrames for HTML-rendered captions and motion graphics; Pro Tools dialogue repair and loudness delivery.</p></div>
+    <div class="card"><h4><span class="zh">Web 工具与站点系统</span><span class="en">Web Tools &amp; Site System</span><i class="zh">前端层</i><i class="en">Front end</i></h4>
+      <p class="zh">独立维护九个站点的静态站系统与多个浏览器端工具(图片处理、提示词模板管理、Markdown 管理、灵感画布);本地优先,Git 管理,Cloudflare Pages 自动部署,上线前做脱敏扫描与双视口验收。</p>
+      <p class="en">Maintain a static system of nine sites plus several browser tools (image processing, prompt template manager, Markdown manager, inspiration canvas): local-first, Git-managed, auto-deployed on Cloudflare Pages, with a redaction scan and dual-viewport check before release.</p></div>
+    <div class="card"><h4><span class="zh">代码生成视觉</span><span class="en">Code-Generated Visuals</span><i class="zh">创意技术</i><i class="en">Creative tech</i></h4>
+      <p class="zh">用代码直出印刷海报、版画、水墨与油画风格画面;使用 GPU 加速逐笔渲染;Three.js 图形与交互、点绘动画、3D 场景与地形管线。</p>
+      <p class="en">Print posters, engravings, ink and oil-painting styles drawn directly in code with GPU-accelerated stroke rendering; Three.js graphics and interaction, stipple animation, 3D scenes and terrain pipelines.</p></div>
+    <div class="card"><h4><span class="zh">知识库与调研方法</span><span class="en">Knowledge Base &amp; Research Method</span><i class="zh">知识层</i><i class="en">Knowledge</i></h4>
+      <p class="zh">建立个人知识库与摄入流程;形成“假设—证伪—核链”的调研方法,成品只交结论与够用的材料;长篇文本的分章翻译流程带防漂移校验。</p>
+      <p class="en">A personal knowledge base with an ingestion workflow; a hypothesis, falsification and source-chain research method that delivers conclusions with just enough evidence; chapter-by-chapter long-text translation with drift checks.</p></div>
+    <div class="card"><h4><span class="zh">本地 LLM 与批处理</span><span class="en">Local LLM &amp; Batch Processing</span><i class="zh">推理层</i><i class="en">Inference</i></h4>
+      <p class="zh">部署带视觉能力的本地大模型服务(空闲自动卸载显存、与绘图实例互斥),承接打标、分类、读图转写、初译等批量机械任务,按“本地先行、云端留给判断”分配算力与额度。</p>
+      <p class="en">Deployed a vision-capable local LLM service (auto-unload when idle, mutually exclusive with image instances) for tagging, classification, image transcription and first-pass translation, allocating compute on a “local first, cloud for judgment” rule.</p></div>
+    <div class="card"><h4><span class="zh">3D 与地形管线</span><span class="en">3D &amp; Terrain Pipeline</span><i class="zh">空间层</i><i class="en">Spatial</i></h4>
+      <p class="zh">Gaea 地形生成到 Blender 的高度图与网格管线,glTF 减面与贴图压缩;Godot 搭建可行走的 3D 场景;导演台式机位摆位与运镜预演。</p>
+      <p class="en">Gaea heightmaps to Blender meshes, glTF decimation and texture compression; walkable 3D scenes in Godot; director-style camera blocking and previz.</p></div>
+  </div>
+</section>
+
+<section id="exp">
+  <h2><span class="zh">工作经历</span><span class="en">Experience</span></h2>
+  <div class="tl">
+    <div class="job">
+      <div class="job-h"><b><span class="zh">自由职业</span><span class="en">Freelance</span></b><span class="zh">2022 – 至今</span><span class="en">2022 – Present</span></div>
+      <div class="t"><span class="zh">AI Agent 与多模态系统 · 独立研发</span><span class="en">AI Agents &amp; Multimodal Systems · Independent R&amp;D</span></div>
+      <p class="zh">独立承接并自主研发 AI 工作流与内容生产系统,完成上述多智能体协作体系、私有化内容生产平台、视频自动化生产线及 Web 工具集的设计、实现与长期运行。</p>
+      <p class="en">Independently took on and built AI workflow and content production systems, delivering the design, implementation and long-term operation of the multi-agent system, private content platform, video pipeline and web tools above.</p>
+    </div>
+    <div class="job">
+      <div class="job-h"><b><span class="zh">上海术己文化有限公司</span><span class="en">Shanghai Shuji Culture Co., Ltd.</span></b><span>2019.12 – 2022</span></div>
+      <div class="t"><span class="zh">摄影师 · 视觉内容执行</span><span class="en">Photographer · Visual Content Execution</span></div>
+      <p class="zh">覆盖时尚大片、电商服装、家居生活方式、品牌活动及宣传片的拍摄;前期沟通方向与布光方案,中期协调模特、造型、道具,后期独立完成修图与剪辑调色;对接设计、文案与客户,按项目节点推进交付。</p>
+      <p class="en">Shot fashion editorials, e-commerce apparel, home lifestyle, brand events and promo films; aligned direction and lighting plans up front, coordinated models, styling and props on set, and handled retouching, editing and grading; worked across design, copy and clients to deliver on milestones.</p>
+    </div>
+    <div class="job">
+      <div class="job-h"><b><span class="zh">上海洛咖网络科技有限公司</span><span class="en">Shanghai Luoka Network Technology Co., Ltd.</span></b><span>2019.01 – 2019.07</span></div>
+      <div class="t"><span class="zh">摄影师</span><span class="en">Photographer</span></div>
+      <p class="zh">独立承担商业服装摄影从方案落地到成片输出的完整流程。</p>
+      <p class="en">Owned the full commercial apparel shoot, from plan to final delivery.</p>
+    </div>
+    <div class="job">
+      <div class="job-h"><b><span class="zh">上海奇柒辰垚文化传播有限公司</span><span class="en">Shanghai Qiqi Chenyao Culture Communication Co., Ltd.</span></b><span>2015.07 – 2016.01</span></div>
+      <div class="t"><span class="zh">摄影助理</span><span class="en">Photography Assistant</span></div>
+      <p class="zh">协助平面与视频拍摄,负责器材、现场布光协助、素材整理与基础修图。</p>
+      <p class="en">Assisted on stills and video shoots: equipment, on-set lighting support, footage sorting and basic retouching.</p>
+    </div>
+  </div>
+</section>
+
+<section id="film">
+  <div class="two">
+    <div>
+      <h2><span class="zh">影像作品</span><span class="en">Film Work</span></h2>
+      <div class="box"><ul>
+        <li><b>May</b> — Director &amp; writer · in distribution</li>
+        <li><b>Shake It, Bake It</b> — Director &amp; writer · in production</li>
+        <li><b>Shaheding</b> — Editing &amp; sound mixing · Best Film, Filmarathon</li>
+        <li><b>Of No Consequence</b> — Shooting assistant</li>
+        <li><b>Stills assistant</b> — Yanan Has No Holiday · A Dog Frozen by the Roadside · A Tree Outside the Door · Next in Line</li>
+      </ul></div>
+    </div>
+    <div>
+      <h2><span class="zh">教育背景</span><span class="en">Education</span></h2>
+      <div class="box">
+        <span class="edu-n zh">山西传媒学院</span><span class="edu-n en">Communication University of Shanxi</span>
+        <p class="zh">本科 · 影视编导与制作<br>2011 – 2015</p>
+        <p class="en">B.A. · Film &amp; TV Directing and Production<br>2011 – 2015</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>© <span class="zh">马挚</span><span class="en">Ma Zhi</span></footer>
+</main>
+
+<script>
+(function(){
+  document.querySelectorAll('a.em').forEach(function(a){ var m=a.dataset.u+'\u0040'+a.dataset.d; a.textContent=m; a.href='mai'+'lto:'+m; });
+})();
+(function(){
+  var b=document.body, btns=document.querySelectorAll('.sw button'), key='mz-resume-lang';
+  function set(l){
+    b.className='lang-'+l;
+    document.documentElement.lang = l==='zh' ? 'zh-CN' : 'en';
+    btns.forEach(function(x){ x.classList.toggle('on', x.dataset.l===l); });
+    document.title = l==='zh'
+      ? '马挚 · AI 创意技术专家 · 简历'
+      : 'Ma Zhi · Creative Technologist · Resume';
+    try{ localStorage.setItem(key,l); }catch(e){}
+  }
+  btns.forEach(function(x){ x.addEventListener('click', function(){ set(x.dataset.l); }); });
+  var saved=null; try{ saved=localStorage.getItem(key); }catch(e){}
+  var q=(location.search.match(/lang=(zh|en)/)||[])[1];
+  var init = q || saved || ((navigator.language||'').toLowerCase().indexOf('zh')===0 ? 'zh' : 'en');
+  set(init);
+})();
+</script>
+</body>
+</html>
